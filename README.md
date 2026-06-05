@@ -164,9 +164,7 @@ Yes. Set it up once. It runs forever.
 
 ## Download & Import Workflow
 
-1. Download the file here:
-[google-form-automation.json](files/google-form-automation.json)
-
+1. Download the file here:Go json file
 2. Open n8n
 3. Click Import Workflow
 4. Upload the JSON file
