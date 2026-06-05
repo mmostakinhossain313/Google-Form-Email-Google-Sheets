@@ -1,0 +1,175 @@
+{
+  "name": "Google Form → Email + Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1UdDZ4cZLRbhLSdsjVecmm1VQTcX6RwkK0c1e2nhypJk",
+          "mode": "list",
+          "cachedResultName": "Contact Form Responses",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UdDZ4cZLRbhLSdsjVecmm1VQTcX6RwkK0c1e2nhypJk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 646170683,
+          "mode": "list",
+          "cachedResultName": "Form Responses 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UdDZ4cZLRbhLSdsjVecmm1VQTcX6RwkK0c1e2nhypJk/edit#gid=646170683"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        0
+      ],
+      "id": "f84fb706-60aa-4d78-b8c2-a5af524a7a87",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "oWLZtsTXLWr3PNY2",
+          "name": "Google Sheets Trigger OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "491ebcae-50a3-4fe1-a730-375219ee1af8",
+              "name": "Full Name",
+              "value": "={{ $json['Full Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "dfae4dda-20d4-46e8-a3d7-e183e6183ba4",
+              "name": "Email Address",
+              "value": "={{ $json['Email Address'] }}",
+              "type": "string"
+            },
+            {
+              "id": "6670fd13-9942-4297-a434-1f757665da4b",
+              "name": "Your Message",
+              "value": "={{ $json['Your Message'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "2f624cfe-d2c2-49fd-8bfc-7ec4ca0a8f64",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "=mostakinhossain89@gmail.com",
+        "subject": "={{ $('Edit Fields').item.json['Full Name'] }}",
+        "message": "=You have a new form submission!\n\nFull Name: {{ $('Edit Fields').item.json['Full Name'] }}\nEmail: {{ $('Edit Fields').item.json['Email Address'] }}\nMessage: {{ $('Edit Fields').item.json['Your Message'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        0
+      ],
+      "id": "6db4c9e9-d129-489b-b7ee-f9c30d086977",
+      "name": "Send a message",
+      "webhookId": "785fba7e-b150-4532-93ea-9cc370349d41",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6stsBcdkO41pX8Kq",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').item.json['Email Address'] }}",
+        "subject": "We received your message!",
+        "message": "=Hi {{ $('Edit Fields').item.json['Full Name'] }},\n\nThank you for reaching out!\n\nWe have received your message:\n{{ $('Edit Fields').item.json['Your Message'] }}\n\nWe will get back to you within 24 hours.\n\nBest regards,\nYour Business Name",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        0
+      ],
+      "id": "dc39fbab-360c-412b-82d6-d05f7b9dc025",
+      "name": "Send a message1",
+      "webhookId": "21d7c551-a2b3-4548-b395-c3de1e2d164f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6stsBcdkO41pX8Kq",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "dd87046d-8f18-4a3f-8f5a-842cd5b53fc0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f2f23a593b5262fad10e7ebf366e5500ddfd99f99fc69ff6bdb831511c19c666"
+  },
+  "id": "nQOSFzz5RHY3QrZO",
+  "tags": []
+}
